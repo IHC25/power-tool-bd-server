@@ -43,9 +43,23 @@ async function run() {
       res.send(orders);
     });
 
+    app.get("/my-order", async (req, res) => {
+      const user = req.query.user;
+      const query = { email: user };
+      const myOrder = await orderCollection.find(query).toArray();
+      return res.send(myOrder);
+    });
+
     app.post("/order", async (req, res) => {
       const order = req.body;
       const result = await orderCollection.insertOne(order);
+      res.send(result);
+    });
+
+    app.delete("/order/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const result = await orderCollection.deleteOne(filter);
       res.send(result);
     });
 
