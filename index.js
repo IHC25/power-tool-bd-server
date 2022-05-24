@@ -19,6 +19,7 @@ async function run() {
     await client.connect();
 
     const toolsCollection = client.db("power_tool_bd").collection("tools");
+    const orderCollection = client.db("power_tool_bd").collection("orders");
     const reviewCollection = client.db("power_tool_bd").collection("reviews");
 
     app.get("/tools", async (req, res) => {
@@ -33,6 +34,19 @@ async function run() {
       const query = { _id: ObjectId(id) };
       const tool = await toolsCollection.findOne(query);
       res.send(tool);
+    });
+
+    app.get("/order", async (req, res) => {
+      const query = {};
+      const cursor = orderCollection.find(query);
+      const orders = await cursor.toArray();
+      res.send(orders);
+    });
+
+    app.post("/order", async (req, res) => {
+      const order = req.body;
+      const result = await orderCollection.insertOne(order);
+      res.send(result);
     });
 
     app.get("/reviews", async (req, res) => {
