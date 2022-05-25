@@ -114,6 +114,16 @@ async function run() {
       res.send(result);
     });
 
+    app.put("/order/shipped/:id", verifyJWT, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const updateDoc = {
+        $set: { status: "approved" },
+      };
+      const result = await orderCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
     app.patch("/order/:id", async (req, res) => {
       const id = req.params.id;
       const payment = req.body;
