@@ -118,6 +118,36 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/user", verifyJWT, async (req, res) => {
+      const query = {};
+      const result = await userCollection.find(query).toArray();
+      return res.send(result);
+    });
+
+    app.get("/my-profile/:email", verifyJWT, async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await userCollection.find(query).toArray();
+      return res.send(result);
+    });
+
+    app.patch("/update-user/:email", async (req, res) => {
+      const email = req.params.email;
+      const updatedUser = req.body;
+      const filter = { email: email };
+      const updatedDoc = {
+        $set: {
+          education: updatedUser.education,
+          location: updatedUser.location,
+          phone: updatedUser.phone,
+          linkedin: updatedUser.linkedin,
+        },
+      };
+
+      const result = await userCollection.updateOne(filter, updatedDoc);
+      res.send(result);
+    });
+
     app.put("/user/:email", async (req, res) => {
       const email = req.params.email;
       const user = req.body;
