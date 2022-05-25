@@ -67,6 +67,12 @@ async function run() {
       res.send(tool);
     });
 
+    app.post("/tools", async (req, res) => {
+      const newTool = req.body;
+      const result = await toolsCollection.insertOne(newTool);
+      res.send(result);
+    });
+
     app.get("/order", verifyJWT, async (req, res) => {
       const query = {};
       const cursor = orderCollection.find(query);
