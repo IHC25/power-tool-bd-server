@@ -26,4 +26,4 @@ This is a Manufacturer Website where user can buy products Manufactured by POWER
 
 ### Live Website
 
-[https://facebook.github.io/create-react-app/docs/deployment]
+[https://power-tool-bd.web.app/]
